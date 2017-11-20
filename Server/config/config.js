@@ -4,27 +4,26 @@ var path = require('path'),
 //
 //line 3 uses the configg based on development or node env varia
 
-var config = {                                      
-    developement:{
-      root:rootPath,
-      app:{ name:'ToDo'},
-      port:5000,                                  //
-      db: 'mongodb://127.0.0.1/todo-dev'
-    },  
+var config = {
+  developement:{
+    root:rootPath,
+    app:{ name:'ToDo'},
+    port:5000,
+    db: 'mongodb://127.0.0.1/todo-dev',
+    secret: "cayennedlikedhistreats"
+  },  
+  test: {
+    root: rootPath,
+    app: {     name: 'ToDo'    },
+    port: 4000,
+    db: 'mongodb://127.0.0.1/todo-test'
+  },
+  production: {
+    root: rootPath,
+    app: {name: 'ToDo'},
+    port: 80,
+    db: 'mongodb://127.0.0.1/todo' 
+  }
+};
 
-    test: {
-      root: rootPath,
-      app: {     name: 'ToDo'    },
-      port: 4000,
-      db: 'mongodb://127.0.0.1/todo-test'
-    },
-                              
-    production: {    
-      root: rootPath,    
-      app: {name: 'ToDo'},    
-      port: 80,                           
-      db: 'mongodb://127.0.0.1/todo' 
-    }
- };
-
-module.exports = config[env];                       //1
+module.exports = config[env];

@@ -7,6 +7,7 @@ var bluebird = require('bluebird');
 var logger = require ('./logger');
 var morgan = require ('morgan');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 module.exports = function (app, config) {
 
@@ -19,13 +20,15 @@ module.exports = function (app, config) {
   });
   app.listen(config.port);
 
-   logger.log("Loading Mongoose functionality");
-   mongoose.Promise = require('bluebird');
-   mongoose.connect(config.db, {useMongoClient: true});
-   var db = mongoose.connection;
-   db.on('error', function () {
-     throw new Error('unable to connect to database at ' + config.db);
-   });
+  app.use(cors({origin: 'http://localhost:9001'}));
+
+  logger.log("Loading Mongoose functionality");
+  mongoose.Promise = require('bluebird');
+  mongoose.connect(config.db, {useMongoClient: true});
+  var db = mongoose.connection;
+  db.on('error', function () {
+   throw new Error('unable to connect to database at ' + config.db);
+  });
 
   if(process.env.NODE_ENV !== 'test') {
     app.use(morgan('dev'));
@@ -40,9 +43,11 @@ module.exports = function (app, config) {
   }
 
   app.use(bodyParser.json());
+  
   app.use(bodyParser.urlencoded({
     extended: true
   }));
+
    var models = glob.sync(config.root + '/app/models/*.js');
    models.forEach(function (model) {
      require(model);
@@ -52,34 +57,29 @@ module.exports = function (app, config) {
     require(controller)(app, config);
   });
 
-  var users = [ {name:'John', email:'woo@hoo.com'},
-              {name: 'Betty', email: 'loo@woo.com'},
-              {name: 'Hal', email: 'boo@woo.com'}
-  ];
-  app.get('/api/users',function (req, res){
-    res.status(200).json(users);
+
+  app.use(express.static(config.root + '/public'));
+
+  // Error handeling at the end of route chain
+  // First display route not found.
+  app.use(function (req, res) {
+    res.type('text/plan');
+    res.status(404);
+    res.send('404 Not Found');
   });
 
-  app.use(express.static(config.root + '/public'));    //1
-
-// Error handeling at the end of route chain
-// First display route not found.
-    app.use(function (req, res) {
-      res.type('text/plan');
-      res.status(404);
-      res.send('404 Not Found');
-    });
- 
-// If test mode then show us the error stack in the console log
-    app.use(function (err, req, res, next) {
-      if(process.env.NODE_ENV !== 'test') {
+  // If test mode then show us the error stack in the console log
+  app.use(function (err, req, res, next) {
+    if(process.env.NODE_ENV !== 'test') {
       console.error(err.stack);
     }
-// else just bail out and display a general error
-      res.type('text/plan');
-      res.status(500);
-      res.send('500 Sever Error');  
-    });
-  //
-    logger.log("Starting application");
-  };
+    // else just bail out and display a general error
+    res.type('text/plan');
+    res.status(500);
+    res.send('500 Sever Error');  
+  });
+  logger.log("Starting application");
+};
+
+
+

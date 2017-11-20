@@ -1,7 +1,6 @@
 var express = require('express'),
 router = express.Router(),
 logger = require('../../config/logger'),
-
 mongoose = require ('mongoose'),
 Todo = mongoose.model('todos');
 
@@ -9,13 +8,13 @@ module.exports = function (app, config) {
     app.use('/api', router);
 
     router.get('/todos/user/:userID', function (req, res, next){
-        logger.log('Get all users', 'verbose');
+        logger.log('Get all todos', 'verbose');
         
-        var query = User.find ()
-        .sort(req, query, order)
+        var query = Todo.find({userID:req.params.userID})
+        .sort(req.query.order)
         .exec()
         .then(result => {
-          if(result && result.lenght) {
+          if(result && result.length) {
               res.status(200).json(result);
           } else {
               res.status(404).json({message: "No Todos"});
@@ -29,26 +28,27 @@ module.exports = function (app, config) {
     router.get('/todos/:todoID', function (req, res, next){
         logger.log('Get user' + req.params.todoID, 'verbose');
 
-        Todo.findByID(req.params.todoID)
-            .then(Todo=> {
-                if(Todo){
-                    res.status(200).json(Todo);
-                } else {
-                    res.status(404).json({message: "No user found"});
+        Todo.findById(req.params.todoID)
+        .then(Todo=> {
+            if(Todo){
+                res.status(200).json(Todo);
+            } else {
+                res.status(404).json({message: "No user found"});
 
-                }
-            })
-            .catch(error => {
-                    return next(error);
-            });
+            }
+        })
+        .catch(error => {
+                return next(error);
+        });
     });
-    router.post('todos', function(req, res, next){
+
+    router.post('/todos', function(req, res, next){
         logger.log('Create a ToDo', 'verbose');
 
         var todo = new Todo(req.body);
         todo.save()
         .then(result => {
-            rest.status(201).json(result);
+            res.status(201).json(result);
         })
         .catch( err => {
             return next(err); 

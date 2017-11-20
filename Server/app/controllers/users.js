@@ -2,7 +2,12 @@ var express = require('express'),
 router = express.Router(),
 logger = require('../../config/logger'),
 mongoose = require ('mongoose'),
-User = mongoose.model ('Users'); 
+User = mongoose.model('Users')
+passportService = require('../../config/passport'),
+passport = require('passport');
+
+var requireLogin = passport.authenticate('local', { session: false });
+
 
 
 module.exports = function (app, config) {
@@ -28,8 +33,8 @@ module.exports = function (app, config) {
 
     router.get('/users/:userID', function (req, res, next){
         logger.log('Get user'+ req.params.userID, 'verbose');
-
-        User.findById(req, params, userId)
+        console.log('dasd');
+        User.findById(req.params.userID)
         .then(user => {
             if(user){
                 res.status(200).json(user);
@@ -41,9 +46,7 @@ module.exports = function (app, config) {
         .catch(error => {
             return next(error); 
         });
-
     });
-
 
     router.post('/users', function(req, res, next){
         logger.log('Create user', 'verbose');
@@ -60,8 +63,7 @@ module.exports = function (app, config) {
 
     router.put('/users/:userId', function (req, res, next){
         logger.log('Update user'+ req.params.userId, 'verbose');
-
-        user.findOneAndUpdate({_id: req, params, userId},
+        User.findOneAndUpdate({_id: req.params.userId},
         req.body, {new:true, multi:false})
         .then(user => {
             res.status(200).json(user);
@@ -74,11 +76,11 @@ module.exports = function (app, config) {
     router.put('/user/password/:userId', function(req, res, next) {
         logger.log('Update user' +req.params.userId, 'verbose');
 
-        User.findById(req,params,userId)
+        User.findById(req.params.userId)
         .exec()
         .then(function(user){
-            if (req,body,password !==undefined) {
-                user.password = req, body, password;
+            if (req.body.password !==undefined) {
+                user.password = req.body.password;
             }
 
             user.save()
@@ -91,8 +93,9 @@ module.exports = function (app, config) {
 
         });
     });
+ 
     router.delete('/users/:userId', function(req, res, next){
-        logger.log('Delete user'+ req,params,userId, 'verbose')
+        logger.log('Delete user'+ req.params.userId, 'verbose')
 
         User.remove ({_id: req.params.userId})
         .then(user => {
@@ -102,4 +105,6 @@ module.exports = function (app, config) {
             return next(error);
         });
     });
+
+    router.route('/users/login').post(requireLogin, login);
 };

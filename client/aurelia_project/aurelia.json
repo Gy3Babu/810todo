@@ -42,6 +42,16 @@
           "node_modules/requirejs/require.js"
         ],
         "dependencies": [
+          {
+            "name": "regenerator-runtime",
+            "path": "../node_modules/regenerator-runtime",
+            "main": "runtime-module"
+          },
+          {
+            "name": "aurelia-fetch-client",
+            "path": "../node_modules/aurelia-fetch-client/dist/amd",
+            "main": "aurelia-fetch-client"
+          },
           "aurelia-binding",
           "aurelia-bootstrapper",
           "aurelia-dependency-injection",
@@ -78,6 +88,11 @@
             "path": "../node_modules/aurelia-testing/dist/amd",
             "main": "aurelia-testing",
             "env": "dev"
+          },
+          {
+            "name": "aurelia-auth",
+            "path": "../node_modules/aurelia-auth/dist/amd",
+            "main": "aurelia-auth"
           },
           "text"
         ]

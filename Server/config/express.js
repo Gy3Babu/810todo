@@ -1,13 +1,16 @@
 
 // put in requrements
-var express = require('express');
-var glob = require('glob');
-var mongoose = require('mongoose');
-var bluebird = require('bluebird');
-var logger = require ('./logger');
-var morgan = require ('morgan');
-var bodyParser = require('body-parser');
-var cors = require('cors');
+var express = require('express'),
+ glob = require('glob'),
+ mongoose = require('mongoose'),
+ bluebird = require('bluebird'),
+ logger = require ('./logger'),
+ morgan = require ('morgan'),
+ bodyParser = require('body-parser'),
+ cors = require('cors'),
+ multer = require('multer'),
+ mkdirp = require('mkdirp');
+
 
 module.exports = function (app, config) {
 
@@ -21,6 +24,8 @@ module.exports = function (app, config) {
   app.listen(config.port);
 
   app.use(cors({origin: 'http://localhost:9001'}));
+  
+  
 
   logger.log("Loading Mongoose functionality");
   mongoose.Promise = require('bluebird');
@@ -42,11 +47,9 @@ module.exports = function (app, config) {
     });
   }
 
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({limit: '1000mb'}));
   
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }));
+  app.use(bodyParser.urlencoded({limit: '1000mb', extended: true}));
 
    var models = glob.sync(config.root + '/app/models/*.js');
    models.forEach(function (model) {

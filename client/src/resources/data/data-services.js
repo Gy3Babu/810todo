@@ -1,5 +1,5 @@
 import { inject } from 'aurelia-framework';
-import {HttpClient, json} from 'aurelia-fetch-client';
+import { HttpClient, json } from 'aurelia-fetch-client';
 
 @inject(HttpClient)
 export class DataServices {
@@ -11,11 +11,11 @@ export class DataServices {
       config
       .withBaseUrl(this.BASE_URL)
       .withDefaults({
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'X-Requested-With': 'Fetch'
-      }
+        credentials: 'same-origin',
+        headers: {
+          'Accept': 'application/json',
+          'X-Requested-With': 'Fetch'
+        }
       })
       .withInterceptor({
       request(request) {
@@ -83,6 +83,21 @@ export class DataServices {
       .catch(error => {
         return error ;
       });
+  }
+
+  uploadFiles(files, url){
+  return this.httpClient
+    .fetch(url, {
+      method: 'post',
+      body: files
+    })
+    .then(response => response.json())
+    .then(object => {
+      return object;
+    })
+    .catch(error => {
+      return error;
+    });
   }
 
 }

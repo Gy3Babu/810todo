@@ -94,6 +94,7 @@
             "path": "../node_modules/aurelia-auth/dist/amd",
             "main": "aurelia-auth"
           },
+          "moment",
           "text"
         ]
       }

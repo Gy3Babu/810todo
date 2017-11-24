@@ -3,7 +3,7 @@ import {Router} from 'aurelia-router';
 import {ToDos} from '../resources/data/todos';
 import {AuthService} from 'aurelia-auth';
 
-@inject(AuthService, Router)
+@inject(ToDos, AuthService, Router)
 export class Wall {
   constructor(todos, auth,router) {
     this.todos = todos;
@@ -18,8 +18,13 @@ export class Wall {
     this.showList = true;
   }
 
+  back(){
+   this.showList = true; 
+  }
+
   logout(){
-  	this.router.navigate('home');
+    sessionStorage.removeItem('user');
+    this.auth.logout();
   }
 
   createTodo(){	
@@ -27,11 +32,40 @@ export class Wall {
       todo: "",
       description: "",
       dateDue: new Date(),
-      userId: 0,//this.user._id,
+      userID: this.user._id,
       priority: this.priorities[0]
     }
   	this.showList = false;		
   }
+
+  toggleShowCompleted(){
+    this.showCompleted = !this.showCompleted;
+  }
+
+  editTodo(todo){
+    this.todoObj = todo;
+    console.log(todo);
+    this.showList = false;
+  }
+
+  deleteTodo(todo){
+    this.todos.deleteTodo(todo._id);
+  }
+
+  completeTodo(todo){ 
+    todo.completed = !todo.completed;
+    this.todoObj = todo;
+    this.saveTodo();
+  }
+
+  changeFiles(){
+    this.filesToUpload = new Array(); 
+    this.filesToUpload.push(this.files[0]);
+  }
+   removeFile(index){
+    this.filesToUpload.splice(index,1);
+  }
+
 
   async saveTodo(){
     if(this.todoObj){   
@@ -39,16 +73,17 @@ export class Wall {
       if(response.error){
         alert("There was an error creating the ToDo");
       } else {
-        //Could provide feeback                 
+        var todoId = response._id;
+        if(this.filesToUpload && this.filesToUpload.length){
+          await this.todos.uploadFile(this.filesToUpload, this.user._id, todoId);
+          this.filesToUpload = [];
+        }
       }
       this.showList = true;
     }
   }
 
   async activate(){
-    await  true //this.todos.getUserTodos(this.user._id);
+    await  this.todos.getUserTodos(this.user._id);
   }
-
-
-
 }

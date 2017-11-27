@@ -9,6 +9,16 @@ export class ToDos {
     this.todosArray = [];
   }
 
+
+  updateArray(todo){
+    for(var i = 0, l = this.todosArray.length; i < l; i++ ){
+      if (this.todosArray[i]._id == todo._id){
+        this.todosArray[i] = todo;
+        break;
+      }
+    }
+  }
+
   async save(todo){
     if(!todo._id){
       let response = await this.data.post(todo, this.TODOS_SERVICE);
@@ -21,7 +31,7 @@ export class ToDos {
       let response = await this.data.put(todo, this.TODOS_SERVICE + "/" + todo._id);
 
       if(!response.error){
-        // this.updateArray(response);
+        this.updateArray(response);
       }
       return response;      
     }

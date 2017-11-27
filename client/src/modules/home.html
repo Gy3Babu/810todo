@@ -1,5 +1,9 @@
 <template>
-	<h1>${message}</h1>
-    <compose show.bind="showLogin" view="./components/login.html"></compose>
-    <compose show.bind="!showLogin" view="./components/register.html"></compose>
+	<h1 class="text-center topMargin">${message}</h1>
+	<div class="col-sm-6 offset-sm-3">
+		<div class="jumbotron">
+			<compose show.bind="showLogin" view="./components/login.html"></compose>
+			<compose show.bind="!showLogin" view="./components/register.html"></compose>
+		</div>
+	</div>
 </template>

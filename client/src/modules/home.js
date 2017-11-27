@@ -12,21 +12,23 @@ export class Home {
     this.users = users;
     this.message = 'Home';
     this.showLogin = true;
+		this.showOK  = false;
+		this.showError  = false;
   }
 
 
- 	login() {
-    return this.auth.login(this.email, this.password)
-      .then(response => {
+	login() {
+    	return this.auth.login(this.email, this.password)
+		.then(response => {
 				sessionStorage.setItem("user", JSON.stringify(response.user));
 				this.loginError = "";
 				this.router.navigate('list');
-      })
-      .catch(error => {
-        console.log(error);
-        this.loginError = "Invalid credentials.";
-      });
-  };
+		})
+		.catch(error => {
+        	console.log(error);
+			this.loginError = "Username and or password is incorrect. Try again.";
+		});
+	};
 
 	showRegister(){
 		this.user = {
@@ -42,9 +44,15 @@ export class Home {
 	async save(){
 		let serverResponse = await this.users.save(this.user);
 		if (!serverResponse.error) {
-			this.showLogin = true;
+			this.showOK = true;
+			this.user = {
+				firstName: "",
+				lastName: "",
+				email: "",
+				password: ""
+			}
 		} else {
-			this.registerError = "There was a problem registering the user."
+			this.showError = true;
 		}
 	}
 }

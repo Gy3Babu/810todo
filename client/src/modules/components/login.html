@@ -1,15 +1,15 @@
 <template>
-	<div id="errorMsg" innerhtml.bind="loginError"></div>
-		<div class="form-group">
-			<label for="email">Email</label>
-			<input value.bind="email" type="email" autofocus class="form-control"  id="email" placeholder="Email">
-		</div>
-		<div class="form-group">
-			<label for="password">Password</label>
-			<input value.bind="password" type="password" class="form-control" id="password" placeholder="Password"></input>
-		</div>
-		<div class="form-actions">
-			<button click.trigger="login()" class="btn btn-success">Login</button>
-			<span class="btn btn-default registerLink" click.trigger="showRegister()">Register</span>
-		</div>
+	<div id="errorMsg" class="alert alert-danger" show.bind="loginError" innerhtml.bind="loginError"></div>
+	<div class="form-group">
+		<label for="email">Email</label>
+		<input value.bind="email" type="email" autofocus class="form-control"  id="email" placeholder="Email">
+	</div>
+	<div class="form-group">
+		<label for="password">Password</label>
+		<input value.bind="password" type="password" class="form-control" id="password" placeholder="Password"></input>
+	</div>
+	<div class="form-actions text-center">
+		<button click.trigger="login()" class="btn btn-default">Login</button><br><br>
+		<span>Don't have an account? <a click.trigger="showRegister()" href="#">Sign up</a> today!</span>
+	</div>
 </template>

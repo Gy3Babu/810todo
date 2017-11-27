@@ -10,21 +10,29 @@ export class Wall {
   	this.router = router;
     this.auth = auth;
     this.user = JSON.parse(sessionStorage.getItem('user'));
-    this.message = "List"
+    this.message = this.user.firstName+"'s To Do List "
     this.title = "Ross Has Things ToDo!"
     this.editTodoForm = false;
     this.showCompleted = false;
+    this.modalTitle = '';
+    this.selected = [];
     this.priorities = ['Low', 'Medium', 'High', 'Critical'];
-    this.showList = true;
-  }
-
-  back(){
-   this.showList = true; 
   }
 
   logout(){
     sessionStorage.removeItem('user');
     this.auth.logout();
+  }
+
+  selectAction(id,event){
+    var index = this.selected.indexOf(id);
+    if (index >= 0) {
+      this.selected.splice(index,1);
+    } else {
+      this.selected.push(id);
+    }
+
+    $(event.target).toggleClass('active');
   }
 
   createTodo(){	
@@ -35,27 +43,29 @@ export class Wall {
       userID: this.user._id,
       priority: this.priorities[0]
     }
-  	this.showList = false;		
+    this.modalTitle = 'New ToDo';
+    $('#mainModal').modal();
   }
 
-  toggleShowCompleted(){
-    this.showCompleted = !this.showCompleted;
-  }
 
   editTodo(todo){
     this.todoObj = todo;
-    console.log(todo);
-    this.showList = false;
+    $('#mainModal').modal();
+    this.modalTitle = 'Edit ToDo';
   }
 
-  deleteTodo(todo){
-    this.todos.deleteTodo(todo._id);
+  deleteTodo(){
+
+    for(var i = 0, l = this.selected.length; i < l; i ++) {
+      this.todos.deleteTodo(this.selected[i]);
+    }
+    this.selected = [];
   }
 
   completeTodo(todo){ 
     todo.completed = !todo.completed;
     this.todoObj = todo;
-    this.saveTodo();
+    this.saveTodo(false);
   }
 
   changeFiles(){
@@ -67,7 +77,7 @@ export class Wall {
   }
 
 
-  async saveTodo(){
+  async saveTodo(close){
     if(this.todoObj){   
       let response = await this.todos.save(this.todoObj);
       if(response.error){
@@ -79,7 +89,9 @@ export class Wall {
           this.filesToUpload = [];
         }
       }
-      this.showList = true;
+      if (close) {
+        $('#mainModal').modal('toggle');
+      }
     }
   }
 

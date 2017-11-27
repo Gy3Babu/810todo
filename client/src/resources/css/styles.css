@@ -1,3 +1,66 @@
 .rightMargin {
 	margin-right: 10px;
 }
+
+.topMargin{
+	margin-top: 10px;
+}
+
+.btn,
+a{
+	cursor: pointer;
+}
+
+.btn.btn-default{
+	border:1px solid #000;
+	background: #000;
+	color:#fff;
+}
+
+.btn.btn-default:hover,
+.btn.btn-default:focus,
+.btn.btn-default:active{
+	color: #000;
+	background:#fff;
+}
+
+.list-todo,
+.list-completed{
+	list-style: none;
+	padding: 0px;
+	margin: 0px 0px 24px;
+}
+
+.list-todo li,
+.list-completed li{
+	list-style: none;
+	margin-bottom: 8px;
+}
+
+.list-completed{
+	margin-top: 24px
+	border-top: 1px solid;
+	padding-top: 12px;
+}
+
+ul li{
+	cursor: pointer;
+}
+
+ul li.Low i{
+	color: green;
+}
+ul li.Medium i{
+	color: orange;
+}
+ul li.High i{
+	color: orange;
+}
+ul li.Critical i{
+	color: red;	
+}
+
+
+
+
+

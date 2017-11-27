@@ -1,7 +1,28 @@
 <template>
-    First Name: <input value.bind="user.firstName">
-    Last Name: <input value.bind="user.lastName">
-    Email: <input value.bind="user.email">
-    Password: <input value.bind="user.password">
-    <button click.trigger="save()">Save</button>
+	<div class="alert alert-success text-center" show.bind="showOK">
+		"Registration was successful"
+		<br>
+		<a click.trigger="showLogin = true" href="#">Please Login</a>
+	</div>
+	<form>
+		<div class="form-group">
+			<label>First Name:</label>
+		 	<input value.bind="user.firstName" class="form-control" required="">
+		</div>
+		<div class="form-group">
+			<label>Last Name: </label>
+			<input value.bind="user.lastName" class="form-control" required="">
+		</div>
+		<div class="form-group">
+			<label>Email: </label>
+			<input value.bind="user.email" class="form-control" required="">
+		</div>
+		<div class="form-group">
+			<label>Password: </label>
+			<input value.bind="user.password" class="form-control" required="">
+		</div>
+		<div class="form-actions">
+			<button class="btn btn-default" click.trigger="save()">Save</button>
+		</div>
+	</form>
 </template>

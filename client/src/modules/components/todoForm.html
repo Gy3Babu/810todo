@@ -1,14 +1,7 @@
 <template>
-  <div class="card topMargin">
-    <div class="card-body">
-      <span>
-        <i click.trigger="back()" class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
-      </span>
-    </div>
-  </div>  
-  <form>
+    <form>
     <div class="form-group topMargin">
-    <label for="todoInput">Todo *</label>
+      <label for="todoInput">Todo *</label>
       <input value.bind="todoObj.todo" type="text" class="form-control" id="todoInput" aria-describedby="todoHelp" placeholder="Enter ToDo">
       <small id="todoHelp" class="form-text text-muted">A short name for the ToDo.</small>
     </div>
@@ -49,7 +42,7 @@
       </div>
     </div>
 
-    <button click.trigger="saveTodo()" class="btn btn-primary topMargin">Save</button>
+    <button click.trigger="saveTodo(true)" class="btn btn-primary topMargin">Save</button>
   </form>
 </template>
 

@@ -1,10 +1,10 @@
 var authConfig = {
-  baseUrl: "http://localhost:5000/api",
-  loginUrl: '/users/login',
+  baseUrl: "",
+  loginUrl: 'users/login',
   tokenName: 'token',
   authHeader: 'Authorization',
   authToken: '',
-  logoutRedirect: '#/home'
+  logoutRedirect: '#/'
 }
 
 export default authConfig;

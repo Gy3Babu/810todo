@@ -1,19 +1,41 @@
 <template>
 	<div class="col-sm-8 offset-sm-2 topMargin">
 		<button class="btn btn-default btn-sm pull-right" click.trigger="logout()">Sing Out</button>
+    <button class="btn btn-default btn-sm pull-right rightMargin" click.trigger="deleteTodo()">
+      <i class="fa fa-trash"></i>
+    </button>
 		<h1>${message}</h1>
 		<compose view="./components/todoList.html"></compose>
 		<div class="modal fade" id="mainModal">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-							<h5 class="modal-title">${modalTitle}</h5>
-							<button type="button" class="close" data-dismiss="modal">
-								<i class="fa fa-close"></i>
-							</button>
+						<h5 class="modal-title">${modalTitle}</h5>
+						<button type="button" class="close" data-dismiss="modal">
+							<i class="fa fa-close"></i>
+						</button>
 					</div>
 					<div class="modal-body">
 						<compose view="./components/todoForm.html"></compose>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="showModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">${todoObj.todo} - ${todoObj.priority}</h5>
+						<button type="button" class="close" data-dismiss="modal">
+							<i class="fa fa-close"></i>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div>${todoObj.description}</div>
+						<div>
+							<label>File:</label>
+							<a target="_blank" href="/uploads/${user._id}/${todoObj.file.filename}">${todoObj.file.filename}</a>
+						</div>
 					</div>
 				</div>
 			</div>

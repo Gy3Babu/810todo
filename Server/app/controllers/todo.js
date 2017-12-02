@@ -50,7 +50,7 @@ module.exports = function (app, config) {
       }
       todo.save()
       .then(todo => {
-      res.status(200).json(todo);
+        res.status(200).json(todo);
       })
       .catch(error => {
       return next(error);

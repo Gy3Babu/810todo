@@ -1,19 +1,17 @@
 <template>
-  <div class="card">
-     <div class="card-body text-right">
-        <a click.trigger="deleteTodo()" class="btn btn-default" href="#">
-          <i class="fa fa-trash"></i>
-        </a>
-     </div>
-  </div>
-  <br><br>
   <div>
+    <div show.bind="!todos.todosArray.length">
+      <h4>Apparently, you don't have anything to do!</h4>
+    </div>
     <ul class="list-todo list-group">
       <li repeat.for="todo of todos.todosArray"  class="list-group-item list-group-item-action ${todo.priority}" click.trigger="selectAction(todo._id,$event)"  show.bind="!todo.completed">
         <i click.trigger="completeTodo(todo)" class="fa fa-square-o"></i>
         <span>${todo.todo}</span>
         <a click.trigger="editTodo(todo)" class="pull-right">
           <span class="fa fa-edit"></span>
+        </a>
+        <a click.trigger="showTodo(todo)" class="pull-right rightMargin">
+          <span class="fa fa-eye "></span>
         </a>
       </li>
       <li class="list-group-item">
@@ -29,11 +27,11 @@
         <li class="list-group-item list-group-item-action" repeat.for="todo of todos.todosArray" click.trigger="selectAction(todo._id,$event)"  show.bind="todo.completed" class.bind="(selected.indexOf(todo._id) < 0)? todo.priority : todo.priority+' active'">
           <i click.trigger="completeTodo(todo)" class="fa fa-check "></i>
           <span>${todo.todo}</span>
+          <a click.trigger="showTodo(todo)" class="pull-right">
+            <i class="fa fa-eye "></i>
+          </a>
         </li>
       </ul>
     </div>
-  </div>
-  <div show.bind="!todos.todosArray.length">
-    <h2>Apparently, you don't have anything to do!</h2>
   </div>
 </template>

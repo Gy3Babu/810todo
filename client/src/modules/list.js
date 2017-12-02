@@ -48,6 +48,11 @@ export class Wall {
   }
 
 
+  showTodo(todo){
+    this.todoObj = todo;
+    $('#showModal').modal();
+  }
+
   editTodo(todo){
     this.todoObj = todo;
     $('#mainModal').modal();
